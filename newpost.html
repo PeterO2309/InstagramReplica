@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Add Post</title>
+
+
+     <link rel="stylesheet" href="css/style.css" type="text/css">
+
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+ <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </head>
+    <body>
+
+
+<div class="container">
+
+  <div class="header">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="navbar-nav mr-auto">
+              <div class="nav-item">
+                  <a class="nav-link" href="/">Home</a>
+              </div>
+          </div>
+      </nav>
+  </div>
+        {% if myuser.email_address%}
+        <h2 class="modal-title text-center">New Post</h2>
+          <hr class="pt-3">
+
+          <div class="row">
+
+
+               <div class="col-sm-3 col-md-3 col-lg-3">
+              </div>
+
+                  <div class="col-sm-6 col-md-6 col-lg-6">
+
+
+            <form action="{{upload_url}}" method="post" enctype="multipart/form-data">
+              <h4 for="image" class="text-center pb-1">Upload Image</h4>
+                    <input type="file" class=" mx-auto" name="image" id="image" accept=".jpg, .png" required>
+
+                    <h4 for="caption" class="text-center">Caption</h4>
+                    <input type="text" name="caption" class="form-control"  id="caption" required><br>
+
+                    <input type="submit" name="button" class="form-control btn btn-info  mx-auto" value="Add Image">
+            </form>
+            <br>
+            <a href="/"><button class="form-control btn btn-info  mx-auto">Cancel</button></a>
+
+          </div>
+
+
+                  <div class="col-sm-3 col-md-3 col-lg-3">
+                  </div>
+
+                  </div>
+
+        {% else %}
+        {% endif%}
+        </div>
+    </body>
+</html>

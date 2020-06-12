@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Profile page </title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    </head>
+
+    <body>
+
+        <div class="main-wrapper">
+
+            <div class="header">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="navbar-nav mr-auto">
+                        <div class="nav-item">
+                            <a class="nav-link" href="/">HOME</a>
+                        </div>
+                    </div>
+
+                    <div class="navbar-nav ml-auto">
+                        <div class="nav-item">
+                            {% if myuser.email_address %}
+                            <a class="btn btn-outline-info" href="{{ url }}">
+                                <span>{{ url_string }}</span>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </nav>
+
+
+            </div>
+
+            {% if myuser %}
+
+            <div class="container">
+
+
+
+                {% if myuser.email_address != vuser.email_address %}
+
+                {% if vuser.key not in myuser.followers %}
+                <div class="header">
+                    <form action="/profile_page?url_ID={{myuser.key.id()}}" class="form-inline" method="post">
+                        <input type="submit" value="Follow" name="button">
+                    </form>
+                </div>
+                {% elif vuser.key in myuser.followers %}
+                <div class="header">
+                    <form action="/profile_page?url_ID={{myuser.key.id()}}" class="form-inline" method="post">
+                        <input type="submit" value="Unfollow" name="button">
+                    </form>
+                </div>
+
+                {% else%}
+                {% endif %}
+                {% endif %}
+
+                <p><a href="/fwers?url_ID={{myuser.key.id()}}">{{ followers }} followers</a></p>
+                <p><a href="/fwing?url_ID={{myuser.key.id()}}">{{ following }} following</a></p>
+
+                <hr>
+                <div class="row">
+                    <div class="col-m-12 col-md-12 col-lg-12 ">
+                        <h4 class="text-center">Posts by {{ myuser.username }} </h4>
+                    </div>
+                </div>
+                <hr>
+
+
+
+
+                {% for i in myuser.posts | reverse %}
+                <div class="row">
+
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <img src="{{get_serving_url(i.get().image)}}" class="img-fluid" alt="ImagePop">
+                        <p class="font-weight-bold text-center py-2">
+                            {{i.get().caption}}
+                        </p>
+
+                    </div>
+
+
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+
+                        <h5 class="text-center">Comments: </h5>
+                        <ul>
+
+
+                            {% for m in i.get().comment_k | reverse %}
+                            {% if loop.index <= 5 %}
+
+                                                <li>
+                            <p>Username: {{ m.get().comment_by}} </p>
+                            <p>Text: {{ m.get().comment_text}} </p>
+                            </li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if i.get().comment_k | length > 5 %}
+
+                        <button type="button"><a href="/read_more_comments?pID={{i.get().key.id()}}&ID={{myuser.key.id()}}">read more comments</a></button>
+                        {% endif %}
+                        </ul>
+
+                    <form action="/profile_page" method="post">
+                        <input type="text" id="hcomment" name="hcomment" maxlength="200" placeholder="add comment"  required>
+                        <input type="hidden" name="ID" value="{{ myuser.key.id()}}"/>
+                        <input type="hidden" name="pID" value="{{ i.get().key.id()}}"/>
+                        <input type="submit" value="ADD" name="button" class="btn btn-outline-info">
+                    </form>
+
+                </div>
+            </div>
+            <hr>
+            {% endfor %}
+
+
+        </div>
+
+        {% endif %}
+
+        </div>
+    </body>
+</html>

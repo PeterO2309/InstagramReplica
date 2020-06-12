@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Search for user</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    </head>
+
+    <body>
+
+        <div class="main-wrapper">
+
+            <div class="header">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="navbar-nav mr-auto">
+                        <div class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="container">
+
+
+                <div class="row">
+
+                    {% if myuser %}
+                    <div class=" col-sm-12 col-md-12 col-lg-12">
+
+                        <div class="row">
+
+                            <div class=" col-sm-2 col-md-2 col-lg-2">
+
+                            </div>
+
+                            <div class=" col-sm-8 col-md-8 col-lg-8">
+
+                                <form action="/search" class="form-inline" id="search_user" method="post">
+                                    <input type="text" class="form-control w-50 mx-auto" placeholder="search" name="username" required>
+                                    <input type="hidden" name="ID" value="{{ myuser.key.id()}}"/>
+                                    <input type="submit" value="Search user" class="mx-auto btn btn-outline-info" name="button">
+                                </form>
+                            </div>
+                            <div class=" col-sm-2 col-md-2 col-lg-2">
+
+                            </div>
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+                    <div class=" col-sm-12 col-md-12 col-lg-12 mt-3">
+
+                        <h4> results</h4>
+
+                        {% for i in users_list%}
+                        <p class="text-center mx-auto">
+
+                            <a href="/profile_page?url_ID={{i.key.id()}}"><h5> {{i.username}}</h5></a>
+
+                        </p>
+
+                        {%endfor%}
+                    </div>
+
+                    {% endif  %}
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

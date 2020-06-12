@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>read_more_comments </title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    </head>
+
+    <body>
+
+        <div class="main-wrapper">
+
+            <div class="header">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="navbar-nav mr-auto">
+                        <div class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </div>
+                    </div>
+
+                    <div class="navbar-nav ml-auto">
+                        <div class="nav-item">
+                            {% if myuser.email_address %}
+                            <a class="btn btn-outline-info" href="{{ url }}">
+                                <span>{{ url_string }}</span>
+                            </a>
+                            {% else %}
+                            <a class="btn btn-outline-info" href="{{ url }}">
+                                <span>{{ url_string }}</span>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <div>
+              <h4 class="text-center">Comment Details</h4>
+              <ul>
+              <form class="" action="/read_more_comments" method="post">
+                {% for m in post_obj.comment_k | reverse %}
+
+                <li>
+                    <p>Username: {{ m.get().comment_by}} </p>
+                    <p>Text: {{ m.get().comment_text}} </p>
+                    <p>User email: {{ m.get().commenter_email}} </p>
+                    <p>time: {{ m.get().comment_time}} </p>
+                </li>
+
+                {% endfor %}
+              </ul>
+              </form>
+
+            </div
+
+
+            </div>
+                </body>
+            </html>

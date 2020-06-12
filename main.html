@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Home Page</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
+
+    </head>
+
+    <body>
+
+        <div class="main-wrapper">
+
+            <div class="header">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="navbar-nav mr-auto">
+                        <div class="nav-item">
+                            <a  class="nav-link" href="/">HOME</a>
+                        </div>
+                        {% if myuser.username %}
+                        <div class="nav-item">
+                            <a class="nav-link" href="/search">SEARCH FOR USER</a>
+                        </div>
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="navbar-nav ml-auto">
+                        <div class="nav-item">
+                            {% if myuser.email_address %}
+                            <a class="btn btn-outline-info" href="{{ url }}">
+                                <span>{{ url_string }}</span>
+                            </a>
+                            {% else %}
+                            <a class="btn btn-outline-info" href="{{ url }}">
+                                <span>{{ url_string }}</span>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="container greeting mt-5">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h1><strong>Welcome,</strong></h1>
+                        <div class="logged-in-user mt-2">
+                            {% if myuser.email_address %}
+                            <h5>Logged in as: <strong>{{ myuser.username }}</strong></h5>
+                            <h5>Email: <strong>{{ myuser.email_address }}</strong></h5>
+                            {% else %}
+                            <h5>You are not currently logged in</h5>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% if myuser.email_address %}
+
+                    <div class="col-sm-6">
+                        {% if not myuser.username %}
+                        <form action="/" method="post">
+                            <label for="username">Username:</label>
+                            <input type="text" id="username" name="username">
+                            <input type="hidden" name="ID" value="{{ myuser.key.id()}}"/>
+                            <input type="submit" value="Add Username" name="button"><br><br>
+                        </form>
+                    </div>
+
+                    {% else %}
+                    <div class="col-sm-6">
+                        <div class="new-post mt-5 mt-sm-0">
+                            <button class="btn btn-block btn-outline-info"><a href="/newpost">
+                                New Post</a>
+                            </button>
+
+                            <button class="btn btn-block btn-outline-info"><a href="/profile_page?url_ID={{myuser.key.id()}}">
+                                Profile Page</a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+
+                <hr>
+                <div class="row">
+                    <div class="col-m-12 col-md-12 col-lg-12 ">
+                        <h4 class="text-center">Timeline </h4>
+                    </div>
+                </div>
+                <hr>
+
+
+                {% for i in combined_posts |sort(attribute="posting_time", reverse=True)%}
+                {% if loop.index <= 50 %}
+
+                                     <!-- -->
+                <div class="row">
+
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                      <p class="font-weight-bold text-center py-2">
+
+                          {{i.caption}}
+                      </p>
+                        <img src="{{get_serving_url(i.image)}}" class="img-fluid" alt="ImagePop">
+                        <p>Posted by: {{ i.creator }} @ {{ i.posting_time}}</p>
+
+
+                    </div>
+
+
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+
+                        <h5 class="text-center">Comments: </h5>
+                        <ul>
+
+                            {% for m in i.comment_k | reverse %}
+                            {% if loop.index <= 5 %}
+
+
+                            <li>
+                            <p>Username: {{ m.get().comment_by}} </p>
+                            <p>Text: {{ m.get().comment_text}} </p>
+                            </li>
+
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if i.comment_k | length > 5 %}
+
+                            <button type="button"><a href="/read_more_comments?pID={{i.key.id()}}&ID={{myuser.key.id()}}">read more comments</a></button>
+                            {% endif %}
+
+
+                        </ul>
+
+                    <form action="/" method="post">
+                        <input type="text" id="hcomment" name="hcomment" maxlength="200" placeholder="add comment" required>
+                        <input type="hidden" name="ID" value="{{ myuser.key.id()}}"/>
+                        <input type="hidden" name="pID" value="{{ i.key.id()}}"/>
+                        <input type="submit" value="ADD" name="button" class=" btn btn-outline-info">
+                    </form>
+                </div>
+
+            </div> <!-- End of row for each posts-->
+            <hr>
+
+            {% endif %}
+            {% endfor %}
+        </div>
+
+
+        {% endif %}
+        {% endif %}
+        </div>
+
+    </body>
+</html>
